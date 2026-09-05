@@ -1,0 +1,13 @@
+{
+  "execution_mode": "paper",
+  "symbol": "BTCUSDT",
+  "risk": {
+    "max_daily_loss": 5.0,
+    "max_open_notional": 50.0,
+    "max_consecutive_losses": 3
+  },
+  "alpha": {
+    "implementation": "private",
+    "parameters": "NOT_IN_REPOSITORY"
+  }
+}
