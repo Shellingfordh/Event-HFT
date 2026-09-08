@@ -1,50 +1,13 @@
-# BTC Event-Driven HFT · Private Research Scaffold
+# BTC Event-Driven HFT v2 · Private Research Scaffold
 
-> Internal team repository. This repository intentionally does not contain proprietary alpha logic, thresholds, source ranking, model weights, API credentials, or production execution parameters.
+`Event/Tweet -> Event Engine -> 10-level Microstructure -> Temporal/Impulse -> PRIVATE ALPHA -> Risk -> Paper Execution -> Fast Exit`
 
-## Goal
+This v2 incorporates the original architecture ideas: C++17 hot path, SPSC, preallocation/object-pool pattern, TSC boundary, CPU-affinity hooks, ten-level depth, order-flow feature boundary, temporal memory, impulse prediction, Rust parameter-engine boundary, event intelligence and risk controls.
 
-Build an event-driven crypto research/execution pipeline:
+The actual alpha stays outside this repository. Exact weights, thresholds, timing windows, source ranking, model weights, credentials, production sizing and production endpoints are intentionally absent.
 
-`X/Tweet events → event normalization → market-impact features → signal score → risk gate → short-lived position → fast exit`
+Execution is paper-only. Production exchange integration belongs behind a separately controlled adapter.
 
-The public repository contains infrastructure and interfaces. The proprietary alpha implementation stays in a private package/repository.
+## Build
 
-## Architecture
-
-```text
-Authorized Event API
-        ↓
-Event Normalization
-        ↓
-Event Features + Market Snapshot
-        ↓
-PRIVATE ALPHA
-        ↓
-Risk Gate
-        ↓
-Paper / Controlled Execution
-        ↓
-Fast Exit
-```
-
-## Never commit
-
-- API keys or secrets
-- private watchlists
-- exact alpha weights
-- exact entry/exit thresholds
-- model weights
-- production endpoints
-- production position limits
-- private datasets
-
-## Development order
-
-1. Implement event normalization.
-2. Connect an authorized/test event source.
-3. Implement market-data adapter.
-4. Run paper mode.
-5. Record event-to-order timestamps and execution quality.
-6. Validate signal quality on a private dataset.
-7. Connect controlled execution only after risk checks pass.
+`./scripts/run_demo.sh`

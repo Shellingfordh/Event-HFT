@@ -1,13 +1,1 @@
-{
-  "execution_mode": "paper",
-  "symbol": "BTCUSDT",
-  "risk": {
-    "max_daily_loss": 5.0,
-    "max_open_notional": 50.0,
-    "max_consecutive_losses": 3
-  },
-  "alpha": {
-    "implementation": "private",
-    "parameters": "NOT_IN_REPOSITORY"
-  }
-}
+{"mode":"paper","symbol":"BTCUSDT","book_levels":10,"private_alpha":{"enabled":false,"parameters":"REDACTED"},"parameter_engine":{"implementation":"private"},"risk":{"max_daily_loss":5,"max_open_notional":50,"max_consecutive_losses":3,"max_signal_age_ms":500}}
