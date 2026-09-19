@@ -1,13 +1,28 @@
-# BTC Event-Driven HFT v2 · Private Research Scaffold
+# Event HFT Complete Strategy Implementation
 
-`Event/Tweet -> Event Engine -> 10-level Microstructure -> Temporal/Impulse -> PRIVATE ALPHA -> Risk -> Paper Execution -> Fast Exit`
+## What this repository contains
 
-This v2 incorporates the original architecture ideas: C++17 hot path, SPSC, preallocation/object-pool pattern, TSC boundary, CPU-affinity hooks, ten-level depth, order-flow feature boundary, temporal memory, impulse prediction, Rust parameter-engine boundary, event intelligence and risk controls.
-
-The actual alpha stays outside this repository. Exact weights, thresholds, timing windows, source ranking, model weights, credentials, production sizing and production endpoints are intentionally absent.
-
-Execution is paper-only. Production exchange integration belongs behind a separately controlled adapter.
+A concrete implementation of the strategy architecture discussed previously: 10-level microstructure features, order-flow pressure, temporal memory, impulse/persistence scoring, event-driven signal fusion, add-on logic, exits, adaptive parameter example, and paper execution.
 
 ## Build
 
-`./scripts/run_demo.sh`
+```bash
+cmake -S . -B build
+cmake --build build -j
+./build/event_hft
+```
+
+Rust parameter engine:
+
+```bash
+cd rust/parameter_engine
+cargo run
+```
+
+## Safety
+
+Default mode is simulation. No exchange keys, social-media credentials, or live-order endpoints are present. Before any live deployment, add venue-specific adapters, sequence-gap handling, rejects/cancel-replace handling, kill switches, clock synchronization, persistent audit logs, and extensive replay tests.
+
+## Strategy completeness
+
+The repository contains executable formulas and state transitions rather than empty interfaces. Parameters are explicit in `configs/default.toml`. Where the original discussion did not provide a proprietary mathematical formula, this repository uses a documented engineering approximation and labels it accordingly.

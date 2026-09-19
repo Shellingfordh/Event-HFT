@@ -1,7 +1,5 @@
 [package]
 name="parameter_engine"
-version="0.2.0"
+version="0.1.0"
 edition="2021"
-[lib]
-name="parameter_engine"
-path="src/lib.rs"
+[dependencies]

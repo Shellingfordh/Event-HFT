@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.16)
+project(event_hft LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_executable(event_hft cpp/src/main.cpp)
+target_include_directories(event_hft PRIVATE cpp/include)
+target_compile_options(event_hft PRIVATE -O3 -march=native -ffast-math -Wall -Wextra)

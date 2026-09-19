@@ -1,38 +1,15 @@
 # Architecture
 
-```text
-Authorized X / event source
-          ↓
-   Event normalization
-          ↓
- ┌────────┴─────────┐
- ↓                  ↓
-Event features   Market snapshot
- └────────┬─────────┘
-          ↓
-     PRIVATE ALPHA
-          ↓
-       Risk Gate
-          ↓
- Paper / controlled execution
-          ↓
-     Exit / reconcile
-```
+C++17 owns the latency-sensitive path. Rust owns adaptive parameter logic. Keep the hot path allocation-free after startup.
 
-## Research hypothesis
+Suggested production threads:
 
-Some public information events can produce short-lived repricing impulses in BTC.
+1. feed-ingress
+2. book-builder
+3. feature/alpha
+4. risk/order-manager
+5. execution gateway
+6. event-ingress
+7. telemetry/logger
 
-The event is a candidate catalyst. The market response is the confirmation layer.
-
-Useful public research features include event age, source metadata, text/cashtag extraction, top-of-book imbalance, spread, microprice, short-horizon return, trade intensity, and depth change.
-
-The exact feature combination, weighting, timing window, entry/exit logic, and position sizing remain private.
-
-## Latency accounting
-
-Record:
-
-`source_timestamp → receive_timestamp → feature_timestamp → signal_timestamp → order_submit_timestamp → exchange_ack_timestamp`
-
-Never infer end-to-end latency from one component measurement.
+For CME migration, replace the simulated feed/execution adapters with Rithmic Diamond or MDP 3.0 adapters. Keep strategy and risk interfaces unchanged.

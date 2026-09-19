@@ -1,0 +1,24 @@
+[alpha]
+entry = 0.62
+exit = 0.20
+add_on = 0.78
+event_weight = 0.30
+memory_weight = 0.25
+min_persistence = 0.55
+
+[execution]
+max_spread_bps = 3.0
+max_position = 1.0
+add_on_fraction = 0.5
+stop_bps = 8.0
+take_bps = 12.0
+max_hold_us = 750000
+
+[memory]
+decay_us = 250000
+window_us = 5000000
+
+[market]
+levels = 10
+mode = "paper"
+venue = "SIM"
