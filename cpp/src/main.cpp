@@ -1,10 +1,11 @@
 #include <iostream>
-#include <iomanip>
-#include "hft/strategy.hpp"
-using namespace hft;
+#include "hft/decision_loop.hpp"
+#include "hft/core/clock.hpp"
+#include "hft/risk/risk.hpp"
+#include "hft/execution/paper_execution.hpp"
 int main(){
- Params p; Strategy s(p); Book b; b.ts=1'000'000; double mid=100000;
- for(int t=0;t<30;t++){
-   double m=mid+t*0.8; for(int i=0;i<10;i++){b.l[i].bid_px=m-i*0.5;b.l[i].ask_px=m+i*0.5;b.l[i].bid_qty=100+i*8+(t>10?50:0);b.l[i].ask_qty=100+i*10-(t>10?25:0);} Event e; e.relevance=t>10?0.9:0.2;e.novelty=t==11?1:0.2;e.sentiment=t>10?0.8:0.05; e.ts=b.ts+t*25000; s.on_book(b,e,e.ts); auto pos=s.position(); std::cout<<e.ts<<" mid="<<std::fixed<<std::setprecision(2)<<m<<" pos="<<(int)pos.side<<" qty="<<pos.qty<<" entry="<<pos.entry_px<<"\n";
- }
+ using namespace hft; MarketSnapshot s; s.ts=now_ns(); s.book.bid[0]={100,120};s.book.ask[0]={100.01,60};s.mid=100.005;s.spread_bps=1.0;
+ EventSignal e; e.ts=s.ts;e.id="demo";e.asset="BTC";e.direction=Side::Long;e.relevance=.9;e.novelty=.9;e.credibility=.9;e.impact=.9;
+ DecisionLoop loop(70000,.65); auto d=loop.run(s,nullptr,e); std::cout<<"action="<<(int)d.action<<" score="<<d.score<<" late="<<d.late<<" reason="<<d.reason<<"\n";
+ if(risk_allows(d,s,e,15)){auto o=make_paper_order(d,s,.001);std::cout<<"paper order side="<<(int)o.side<<" px="<<o.limit_px<<" qty="<<o.qty<<"\n";} else std::cout<<"risk rejected\n";
 }

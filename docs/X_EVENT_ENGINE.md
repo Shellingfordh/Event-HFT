@@ -1,83 +1,28 @@
-# X / Twitter Event Engine
+# X Event Engine
 
-## Role in the strategy
+## Purpose
 
-X is an independent event-data lane. It does not directly place orders.
+Turn public X events into time-stamped, asset-aware event hypotheses. It is not a direct trade trigger.
 
-```text
-X Filtered Stream
-        |
-        v
-X Collector
-        |
-        +--> raw audit log
-        |
-        v
-Event Normalizer
-        |
-        +--> author intelligence
-        +--> asset detection
-        +--> novelty / relevance
-        +--> direction / sentiment
-        +--> impact
-        |
-        v
-Event Alpha
-        |
-        +--------------------+
-        |                    |
-        v                    v
-Microstructure Alpha   Temporal Memory
-        |                    |
-        +---------+----------+
-                  v
-             Signal Fusion
-                  |
-                Risk
-                  |
-              Execution
-```
+## Stages
 
-## Official API integration
+1. Filtered Stream ingestion
+2. Raw event persistence
+3. Author enrichment
+4. Asset/entity detection
+5. Event type classification
+6. Novelty detection
+7. Relevance scoring
+8. Direction classification
+9. Impact and expected duration estimation
+10. Emit `EventSignal`
 
-The implementation uses X API v2 Filtered Stream. A bearer token is supplied through `X_BEARER_TOKEN`. The stream accepts persistent connections and active filter rules. Reconnect handling uses the API's supported `backfill_minutes` parameter, capped here at five minutes.
+## Latency discipline
 
-## Rule layer
+The collector can be asynchronous. The decision engine must use the actual `received_ts_ns` as the earliest time at which the event becomes available to the strategy. `created_at` is informational and cannot be used to move the event backwards in time.
 
-`configs/x_rules.json` defines the first-pass event universe. Keep rules broad enough to capture candidate events, then make the event classifier stricter. Do not put trading decisions directly into X rules.
+## Event-to-market research
 
-## Author intelligence
+For each event, measure price and microstructure response over 100 us, 500 us, 1 ms, 5 ms, 20 ms, 100 ms, 1 s, 5 s and 30 s where the venue's data quality supports it.
 
-The normalizer preserves author ID, username, verification and public metrics so a later research process can maintain a persistent `AuthorProfile`. Recommended fields:
-
-- historical_event_count
-- event_to_price_reaction
-- median_reaction_latency
-- direction_hit_rate
-- asset_affinity
-- credibility_score
-
-These should be estimated from replay data, not hard-coded as facts.
-
-## Event scoring
-
-The included scorer is an engineering baseline:
-
-`impact = 0.45 * relevance + 0.25 * novelty + 0.30 * credibility`
-
-Sentiment/direction is rule-based for deterministic development. Replace it with the team's validated classifier when available.
-
-## Latency design
-
-JSONL is for audit/replay and development. In production, bridge the normalized event into the C++ event-ingress queue without routing the trading hot path through a database or synchronous HTTP call.
-
-## Operational safeguards
-
-- Never commit API credentials.
-- Deduplicate by event ID.
-- Preserve source timestamps and receive timestamps.
-- Detect stream disconnects and reconnect.
-- Keep raw payloads for replay.
-- Record rule IDs that caused each event to match.
-- Start with paper execution.
-- Do not infer profitability from the event score alone.
+Store MFE, MAE, signed return, trade intensity, spread change and OFI response. Group by event type, author, asset and market regime.

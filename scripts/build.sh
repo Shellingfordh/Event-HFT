@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
+mkdir -p build
 cmake -S . -B build
-cmake --build build -j"$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 2)"
+cmake --build build -j2

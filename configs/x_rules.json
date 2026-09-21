@@ -1,8 +1,7 @@
 {
   "rules": [
-    {"value": "bitcoin OR $BTC OR #BTC lang:en -is:retweet", "tag": "btc_general"},
-    {"value": "ethereum OR $ETH OR #ETH lang:en -is:retweet", "tag": "eth_general"},
-    {"value": "ETF OR SEC OR FOMC OR CPI OR rate hike OR rate cut lang:en -is:retweet", "tag": "macro_crypto"},
-    {"value": "hack OR exploit OR breach OR halt OR delist OR listing lang:en -is:retweet", "tag": "market_event"}
+    {"value": "(BTC OR Bitcoin OR #BTC) lang:en", "tag": "btc"},
+    {"value": "(ETH OR Ethereum OR #ETH) lang:en", "tag": "eth"},
+    {"value": "(ETF OR SEC OR FOMC OR CPI OR rates OR hack OR exploit OR listing OR delisting)", "tag": "macro_or_market"}
   ]
 }

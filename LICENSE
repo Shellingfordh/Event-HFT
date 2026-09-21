@@ -1,9 +1,5 @@
-Copyright (c) 2026 Shellingfordh. All rights reserved.
+Copyright (c) 2026 Shijie Hu. All rights reserved.
 
-This repository is provided for the owner's project use. Unauthorized commercial use,
-redistribution, publication, or derivative commercialization is prohibited without
-written permission from the copyright holder.
+This repository is proprietary and confidential. Access is granted only to authorized project members for project development. No commercial use, redistribution, sublicensing, or reuse of the strategy, Alpha logic, confidential parameters, or proprietary research is permitted without written authorization.
 
-This software is provided AS IS, without warranty. Trading and market-data software
-can cause financial loss. The repository defaults to simulation and contains no live
-credentials.
+Third-party reference: jarrodwatts/jev-trader is MIT licensed. This repository does not copy its source code; it implements an independent architecture informed by publicly documented engineering patterns.

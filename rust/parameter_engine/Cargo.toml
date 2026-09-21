@@ -1,5 +1,5 @@
 [package]
-name="parameter_engine"
-version="0.1.0"
-edition="2021"
+name = "parameter_engine"
+version = "0.1.0"
+edition = "2021"
 [dependencies]

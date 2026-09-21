@@ -1,28 +1,9 @@
 # X Event Engine
 
-This service is the social-event ingestion side of the HFT system. It uses the official X API v2 Filtered Stream rather than browser scraping.
+This service is intentionally a source adapter. It records raw public X API stream events and keeps them outside the trading hot path.
 
 Pipeline:
 
-`X Filtered Stream -> raw JSONL -> normalized Event -> Event Alpha -> C++ signal fusion`
+`X Filtered Stream -> raw recorder -> normalizer -> event intelligence -> EventSignal -> C++ decision loop`
 
-## Setup
-
-```bash
-export X_BEARER_TOKEN='YOUR_TOKEN'
-python3 services/x_event_engine/x_collector.py sync-rules
-python3 services/x_event_engine/x_collector.py stream
-```
-
-No token is stored in the repository. `.env` is ignored by git.
-
-## Output
-
-- `data/x_raw.jsonl`: original API payloads for replay/audit.
-- `data/x_events.jsonl`: normalized events with author metadata and event features.
-
-Each normalized event contains `asset`, `direction`, `sentiment`, `relevance`, `novelty`, `credibility`, and `impact`.
-
-## Production notes
-
-The collector reconnects with exponential backoff and requests up to five minutes of backfill after reconnect. The hot trading path should consume normalized events from an IPC/lock-free adapter; JSONL is intentionally the audit/replay sink and development bridge.
+Do not call an LLM synchronously from the order hot path. If an external model is used, run it asynchronously and attach the resulting event hypothesis to the next decision window. The market-data confirmation layer remains deterministic.

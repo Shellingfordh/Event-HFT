@@ -1,24 +1,34 @@
-[alpha]
-entry = 0.62
-exit = 0.20
-add_on = 0.78
-event_weight = 0.30
-memory_weight = 0.25
-min_persistence = 0.55
-
-[execution]
-max_spread_bps = 3.0
-max_position = 1.0
-add_on_fraction = 0.5
-stop_bps = 8.0
-take_bps = 12.0
-max_hold_us = 750000
-
-[memory]
-decay_us = 250000
-window_us = 5000000
+[decision]
+clock_us = 100000
+max_decision_us = 70000
+max_event_age_ms = 1500
+one_in_flight = true
 
 [market]
 levels = 10
+windows_us = [100, 500, 1000, 5000, 20000]
+
+[event]
+min_relevance = 0.55
+min_novelty = 0.45
+min_impact = 0.60
+confirmation_required = true
+
+[signal]
+event_weight = 0.45
+micro_weight = 0.55
+entry_threshold = 0.65
+exit_threshold = 0.35
+persistence_threshold = 0.55
+
+[risk]
+dry_run = true
+max_position = 1.0
+max_spread_bps = 15.0
+max_event_age_ms = 1500
+cooldown_ms = 1000
+
+[execution]
 mode = "paper"
-venue = "SIM"
+order_type = "marketable_limit"
+max_slippage_bps = 5.0
